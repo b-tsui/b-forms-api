@@ -3,6 +3,7 @@ const { ApolloServer, gql } = require("apollo-server-express");
 const { checkJwt } = require("./auth");
 const morgan = require("morgan");
 const cors = require("cors");
+const fetch = require("node-fetch");
 
 require("./config");
 const User = require("./models/user");
@@ -12,6 +13,8 @@ const MCQuestion = require("./models/question");
 const Answer = require("./models/answer");
 
 const userRouter = require("./routes/user");
+//for auth0
+const isTokenValid = require("./validate");
 
 // A schema is a collection of type definitions (hence "typeDefs")
 // that together define the "shape" of queries that are executed against
@@ -23,8 +26,8 @@ const typeDefs = gql`
 
   type User {
     id: ID!
-    name: String!
-    email: String!
+    name: String
+    email: String
     forms: [Form]
   }
 
@@ -38,7 +41,7 @@ const typeDefs = gql`
     createdAt: String
   }
 
-  interface Question {
+  type Question {
     id: ID!
     formId: ID!
     question: String
@@ -86,27 +89,23 @@ const typeDefs = gql`
     email: String!
   }
 
-  input QuestionInput {
-    formId: String!
-    question: String
-    questionType: AllowedQuestionType
-  }
+  # input QuestionInput {
+  #   formId: String!
+  #   question: String
+  #   questionType: AllowedQuestionType
+  # }
 
   type Query {
-    users: [User]
-    user(id: ID): User
-    userForms(userId: ID): Form
-    form(id: ID): Form
+    users: [User] #finds all users
+    user(id: ID): User #find user by id
+    userForms(userId: ID): [Form] #find all forms for a user @id
+    form(id: ID): Form #for form by id
+    formQuestions(formId: ID): [Question]
   }
 
   type Mutation {
     addUser(input: AddUserInput!): User!
-    addForm(
-      user: ID!
-      title: String!
-      description: String
-      question: QuestionInput
-    ): Form
+    addForm(userId: ID!, title: String!, description: String): Form
   }
 `;
 
@@ -121,14 +120,25 @@ const resolvers = {
       return await Form.find(input).exec();
     },
     form: async (parent, args, ctx, info) => await Form.findById(args).exec(),
+    formQuestions: async (parent, args, ctx, info) =>
+      await Question.find(args).exec(),
   },
 
   Mutation: {
-    addUser: async (_, { input }) => {
+    addUser: async (_, { input }, { token, error }) => {
+      console.log(input.email);
+      //error from token validation
+      if (error) {
+        throw new Error(error);
+      }
       try {
-        let response = await User.create(input);
-        console.log("string here", response);
-        return response;
+        let user = await User.findOne({ email: input.email }).exec();
+        if (user) {
+          return user;
+        } else {
+          let response = await User.create(input);
+          return response;
+        }
       } catch (e) {
         return e.message;
       }
@@ -147,17 +157,20 @@ const resolvers = {
     user: async (parent, args, ctx, info) => {
       return await User.findById(parent.userId).exec();
     },
+    questions: async (parent, args, ctx, info) => {
+      return await Question.find({ formId: parent.id }).exec();
+    },
   },
   User: {
     forms: async (parent, args, ctx, info) => {
-      return await Form.find({ userId: parent.id });
+      return await Form.find({ userId: parent.id }).exec();
     },
   },
-  Question: {
-    __resolveType(question) {
-      return null;
-    },
-  },
+  // Question: {
+  //   async __resolveType(question) {
+  //     return await Question.findById(question.id).exec();
+  //   },
+  // },
 };
 
 const server = new ApolloServer({
@@ -165,8 +178,11 @@ const server = new ApolloServer({
   resolvers,
   introspection: true,
   playground: true,
-  context() {
-    return { User, Question, Form, Answer, MCQuestion };
+  context: async ({ req }) => {
+    // Get the user token from the headers.
+    const token = req.headers.authorization || "";
+    const { error } = await isTokenValid(token);
+    return { token, error };
   },
 });
 const app = express();
