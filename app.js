@@ -89,6 +89,12 @@ const typeDefs = gql`
     email: String!
   }
 
+  input AddFormInput {
+    userId: ID!
+    title: String!
+    description: String
+  }
+
   # input QuestionInput {
   #   formId: String!
   #   question: String
@@ -105,7 +111,7 @@ const typeDefs = gql`
 
   type Mutation {
     addUser(input: AddUserInput!): User!
-    addForm(userId: ID!, title: String!, description: String): Form
+    addForm(input: AddFormInput!): Form
   }
 `;
 
@@ -143,10 +149,12 @@ const resolvers = {
         return e.message;
       }
     },
-    addForm: async (_, args) => {
+    addForm: async (_, { input }, { error }) => {
+      if (error) {
+        throw new Error(error);
+      }
       try {
-        let response = await Form.create(args);
-        console.log(args);
+        let response = await Form.create(input);
         return response;
       } catch (e) {
         return e.message;
@@ -182,6 +190,7 @@ const server = new ApolloServer({
     // Get the user token from the headers.
     const token = req.headers.authorization || "";
     const { error } = await isTokenValid(token);
+
     return { token, error };
   },
 });
@@ -189,19 +198,6 @@ const app = express();
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(cors());
-
-app.use("/users", userRouter);
-
-app.get("/authorized", checkJwt, (req, res) => {
-  res.send("Secured Resource");
-});
-
-// Define an endpoint that must be called with an access token
-app.get("/api/external", checkJwt, (req, res) => {
-  res.send({
-    msg: "Your Access Token was successfully validated!",
-  });
-});
 
 server.applyMiddleware({ app });
 
