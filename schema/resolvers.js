@@ -44,7 +44,7 @@ const resolvers = {
         throw new Error(error);
       }
       try {
-        let response = await Form.create(input).exec();
+        let response = await Form.create(input);
         return response;
       } catch (e) {
         return e.message;
@@ -55,7 +55,7 @@ const resolvers = {
         throw new Error(error);
       }
       try {
-        let response = await Question.create(input).exec();
+        let response = await Question.create(input);
         return response;
       } catch (e) {
         return e.message;
@@ -66,7 +66,7 @@ const resolvers = {
         throw new Error(error);
       }
       try {
-        let response = await Question.findByIdAndDelete(input.id).exec();
+        let response = await Question.findByIdAndDelete(input.id);
         return response;
       } catch (e) {
         return e.message;
@@ -77,7 +77,7 @@ const resolvers = {
         throw new Error(error);
       }
       try {
-        let response = await Question.findByIdAndUpdate(input.id, input).exec();
+        let response = await Question.findByIdAndUpdate(input.id, input);
         return response;
       } catch (e) {
         return e.message;
