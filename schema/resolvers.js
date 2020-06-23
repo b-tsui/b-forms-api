@@ -32,7 +32,7 @@ const resolvers = {
         if (user) {
           return user;
         } else {
-          let response = await User.create(input);
+          let response = await User.create(input).exec();
           return response;
         }
       } catch (e) {
@@ -44,7 +44,7 @@ const resolvers = {
         throw new Error(error);
       }
       try {
-        let response = await Form.create(input);
+        let response = await Form.create(input).exec();
         return response;
       } catch (e) {
         return e.message;
@@ -55,7 +55,7 @@ const resolvers = {
         throw new Error(error);
       }
       try {
-        let response = await Question.create(input);
+        let response = await Question.create(input).exec();
         return response;
       } catch (e) {
         return e.message;
@@ -66,7 +66,18 @@ const resolvers = {
         throw new Error(error);
       }
       try {
-        let response = await Question.findByIdAndDelete(input.questionId);
+        let response = await Question.findByIdAndDelete(input.id).exec();
+        return response;
+      } catch (e) {
+        return e.message;
+      }
+    },
+    updateQuestion: async (_, { input }, { error }) => {
+      if (error) {
+        throw new Error(error);
+      }
+      try {
+        let response = await Question.findByIdAndUpdate(input.id, input).exec();
         return response;
       } catch (e) {
         return e.message;

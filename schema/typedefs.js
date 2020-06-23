@@ -84,7 +84,15 @@ const typeDefs = gql`
   }
 
   input DeleteQuestionInput {
-    questionId: ID!
+    id: ID!
+  }
+
+  input UpdateQuestionInput {
+    id: ID!
+    formId: ID!
+    question: String
+    questionType: String
+    options: [String]
   }
 
   type Query {
@@ -99,7 +107,8 @@ const typeDefs = gql`
     addUser(input: AddUserInput!): User!
     addForm(input: AddFormInput!): Form!
     addQuestion(input: AddQuestionInput!): Question!
-    deleteQuestion(input: DeleteQuestionInput): Question
+    deleteQuestion(input: DeleteQuestionInput!): Question!
+    updateQuestion(input: UpdateQuestionInput!): Question!
   }
 `;
 
