@@ -83,6 +83,10 @@ const typeDefs = gql`
     formId: ID!
   }
 
+  input DeleteQuestionInput {
+    questionId: ID!
+  }
+
   type Query {
     users: [User] #finds all users
     user(id: ID): User #find user by id
@@ -95,6 +99,7 @@ const typeDefs = gql`
     addUser(input: AddUserInput!): User!
     addForm(input: AddFormInput!): Form!
     addQuestion(input: AddQuestionInput!): Question!
+    deleteQuestion(input: DeleteQuestionInput): Question
   }
 `;
 

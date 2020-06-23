@@ -61,6 +61,17 @@ const resolvers = {
         return e.message;
       }
     },
+    deleteQuestion: async (_, { input }, { error }) => {
+      if (error) {
+        throw new Error(error);
+      }
+      try {
+        let response = await Question.findByIdAndDelete(input.questionId);
+        return response;
+      } catch (e) {
+        return e.message;
+      }
+    },
   },
   Form: {
     user: async (parent, args, ctx, info) => {
@@ -75,11 +86,6 @@ const resolvers = {
       return await Form.find({ userId: parent.id }).exec();
     },
   },
-  // Question: {
-  //   async __resolveType(question) {
-  //     return await Question.findById(question.id).exec();
-  //   },
-  // },
 };
 
 module.exports = resolvers;
