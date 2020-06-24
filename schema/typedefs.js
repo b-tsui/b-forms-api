@@ -51,7 +51,7 @@ const typeDefs = gql`
 
   type Answer {
     id: String
-    question: Question
+    questionId: ID
     answer: String
   }
 
@@ -92,6 +92,11 @@ const typeDefs = gql`
     options: [String]
   }
 
+  input AddAnswerInput {
+    questionId: ID!
+    answer: String
+  }
+
   type Query {
     users: [User] #finds all users
     user(id: ID): User #find user by id
@@ -106,6 +111,7 @@ const typeDefs = gql`
     addQuestion(input: AddQuestionInput!): Question!
     deleteQuestion(input: DeleteQuestionInput!): Question!
     updateQuestion(input: UpdateQuestionInput!): Question!
+    addAnswer(input: AddAnswerInput!): Answer!
   }
 `;
 

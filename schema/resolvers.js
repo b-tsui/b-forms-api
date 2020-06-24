@@ -83,7 +83,16 @@ const resolvers = {
         return e.message;
       }
     },
+    addAnswer: async (_, { input }) => {
+      try {
+        let response = await Answer.create(input);
+        return response;
+      } catch (e) {
+        return e.message;
+      }
+    },
   },
+
   Form: {
     user: async (parent, args, ctx, info) => {
       return await User.findById(parent.userId).exec();
