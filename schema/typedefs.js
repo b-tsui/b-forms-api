@@ -31,6 +31,7 @@ const typeDefs = gql`
     question: String
     questionType: String
     options: [String]
+    answers: [Answer]
   }
 
   # type TextQuestion implements Question {
@@ -53,10 +54,6 @@ const typeDefs = gql`
     question: Question
     answer: String
   }
-
-  # The "Query" type is special: it lists all of the available queries that
-  # clients can execute, along with the return type for each. In this
-  # case, the "books" query returns an array of zero or more Books (defined above).
 
   enum AllowedQuestionType {
     MC

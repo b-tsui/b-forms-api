@@ -20,8 +20,8 @@ mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // const createSeedData = async () => {
 //   const user1 = await new User({
-//     name: "user1",
-//     email: "user1@user1.com",
+//     name: "demo",
+//     email: "demo@demo.com",
 //   });
 //   const form1 = await new Form({
 //     userId: user1.id,

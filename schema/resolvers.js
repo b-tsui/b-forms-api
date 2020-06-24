@@ -97,6 +97,11 @@ const resolvers = {
       return await Form.find({ userId: parent.id }).exec();
     },
   },
+  Question: {
+    answers: async (parent, args, ctx, info) => {
+      return await Answer.find({ questionId: parent.id }).exec();
+    },
+  },
 };
 
 module.exports = resolvers;
