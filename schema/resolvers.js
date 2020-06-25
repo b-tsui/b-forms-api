@@ -19,7 +19,6 @@ const resolvers = {
     formQuestions: async (parent, args, ctx, info) =>
       await Question.find(args).exec(),
   },
-
   Mutation: {
     addUser: async (_, { input }, { token, error }) => {
       console.log(input.email);
@@ -50,6 +49,22 @@ const resolvers = {
         return e.message;
       }
     },
+    deleteForm: async (_, { input }, { error }) => {
+      if (error) {
+        throw new Error(error);
+      }
+      try {
+        let form = await Form.findByIdAndDelete(input.id).exec();
+        let questions = await Question.find({ formId: input.id }).exec();
+        questions.forEach(async (question) => {
+          await Answer.deleteMany({ questionId: question.id });
+          await Question.findByIdAndDelete(question.id);
+        });
+        return form;
+      } catch (e) {
+        return e.message;
+      }
+    },
     addQuestion: async (_, { input }, { error }) => {
       if (error) {
         throw new Error(error);
@@ -67,6 +82,7 @@ const resolvers = {
       }
       try {
         let response = await Question.findByIdAndDelete(input.id);
+        await Answer.deleteMany({ questionId: input.id });
         return response;
       } catch (e) {
         return e.message;
