@@ -43,6 +43,8 @@ const typeDefs = gql`
   enum AllowedQuestionType {
     MC
     Text
+    Checkbox
+    Paragraph
   }
 
   input UserInput {
