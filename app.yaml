@@ -1,1 +1,7 @@
 runtime: nodejs12
+
+env_variables:
+  DBUSER: b-forms
+  DBPASS: csh@4qmDqFrY2V8
+  AUTH0_DOMAIN: b-form.us.auth0.com
+  API_IDENTIFIER: bform-api

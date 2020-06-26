@@ -34,21 +34,6 @@ const typeDefs = gql`
     answers: [Answer]
   }
 
-  # type TextQuestion implements Question {
-  #   id: ID!
-  #   formId: ID!
-  #   question: String
-  #   questionType: String
-  # }
-
-  # type MCQuestion implements Question {
-  #   id: ID!
-  #   formId: ID!
-  #   question: String
-  #   questionType: String
-  #   options: [String]
-  # }
-
   type Answer {
     id: String
     questionId: ID

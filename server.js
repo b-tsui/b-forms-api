@@ -1,6 +1,5 @@
 const express = require("express");
 const { ApolloServer, gql } = require("apollo-server-express");
-const { checkJwt } = require("./auth");
 const morgan = require("morgan");
 const cors = require("cors");
 const fetch = require("node-fetch");
@@ -32,6 +31,8 @@ app.use(cors());
 
 server.applyMiddleware({ app });
 
-app.listen({ port: 4000 }, () =>
+const PORT = process.env.PORT || 4000;
+
+app.listen(PORT, () =>
   console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
 );
