@@ -101,8 +101,8 @@ const typeDefs = gql`
     addForm(input: AddFormInput!): Form!
     deleteForm(input: DeleteFormInput!): Form!
     addQuestion(input: AddQuestionInput!): Question!
-    deleteQuestion(input: DeleteQuestionInput!): Question!
-    updateQuestion(input: UpdateQuestionInput!): Question!
+    deleteQuestion(input: DeleteQuestionInput!): Question
+    updateQuestion(input: UpdateQuestionInput!): Question
     addAnswer(input: AddAnswerInput!): Answer!
   }
 `;
