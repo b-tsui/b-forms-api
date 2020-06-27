@@ -4,7 +4,10 @@ const Schema = mongoose.Schema;
 
 const questionSchema = new Schema({
   formId: String,
-  question: String,
+  question: {
+    type: String,
+    default: "New Question",
+  },
   questionType: {
     type: String,
     enum: ["MC", "Text", "Checkbox", "Paragragh"],

@@ -11,8 +11,8 @@ const resolvers = {
     //find user based on email
     user: async (parent, args, ctx, info) =>
       await User.findById(args.id).exec(),
-    userForms: async (parent, { input }, ctx, info) => {
-      return await Form.find(input).exec();
+    userForms: async (parent, args, ctx, info) => {
+      return await Form.find(args).exec();
     },
     form: async (parent, args, ctx, info) =>
       await Form.findById(args.id).exec(),
