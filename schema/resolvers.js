@@ -31,7 +31,8 @@ const resolvers = {
         if (user) {
           return user;
         } else {
-          let response = await User.create(input).exec();
+          let response = await User.create(input);
+          console.log(response);
           return response;
         }
       } catch (e) {
