@@ -23,6 +23,7 @@ const typeDefs = gql`
     description: String
     questions: [Question]
     createdAt: String
+    answerCount: Int
   }
 
   type Question {

@@ -117,6 +117,10 @@ const resolvers = {
     questions: async (parent, args, ctx, info) => {
       return await Question.find({ formId: parent.id }).exec();
     },
+    answerCount: async (parent, args, ctx, info) => {
+      let q = await Question.findOne({ formId: parent.id });
+      return await Answer.count({ questionId: q.id });
+    },
   },
   User: {
     forms: async (parent, args, ctx, info) => {
