@@ -9,9 +9,10 @@ const formSchema = new mongoose.Schema(
     },
     title: {
       type: String,
+      default: "New Form",
       required: true,
     },
-    description: String,
+    description: { type: String, default: "Form description goes here" },
     questions: Array,
     createdAt: {
       type: Date,

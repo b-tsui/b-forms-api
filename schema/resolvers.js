@@ -21,7 +21,6 @@ const resolvers = {
   },
   Mutation: {
     addUser: async (_, { input }, { token, error }) => {
-      console.log(input.email);
       //error from token validation
       if (error) {
         throw new Error(error);
@@ -32,7 +31,7 @@ const resolvers = {
           return user;
         } else {
           let response = await User.create(input);
-          console.log(response);
+
           return response;
         }
       } catch (e) {
@@ -45,6 +44,17 @@ const resolvers = {
       }
       try {
         let response = await Form.create(input);
+        return response;
+      } catch (e) {
+        return e.message;
+      }
+    },
+    updateForm: async (_, { input }, { error }) => {
+      if (error) {
+        throw new Error(error);
+      }
+      try {
+        let response = await Form.findByIdAndUpdate(input.id, input);
         return response;
       } catch (e) {
         return e.message;

@@ -64,6 +64,12 @@ const typeDefs = gql`
     description: String
   }
 
+  input UpdateFormInput {
+    id: ID!
+    title: String
+    description: String
+  }
+
   input DeleteFormInput {
     id: ID!
   }
@@ -100,6 +106,7 @@ const typeDefs = gql`
   type Mutation {
     addUser(input: AddUserInput!): User!
     addForm(input: AddFormInput!): Form!
+    updateForm(input: UpdateFormInput!): Form
     deleteForm(input: DeleteFormInput!): Form!
     addQuestion(input: AddQuestionInput!): Question!
     deleteQuestion(input: DeleteQuestionInput!): Question
