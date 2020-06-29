@@ -21,7 +21,7 @@ const typeDefs = gql`
     userId: ID
     title: String
     description: String
-    questions: [Question]
+    questions: [Question]!
     createdAt: String
     answerCount: Int
   }
@@ -60,7 +60,7 @@ const typeDefs = gql`
 
   input AddFormInput {
     userId: ID!
-    title: String!
+    title: String
     description: String
   }
 

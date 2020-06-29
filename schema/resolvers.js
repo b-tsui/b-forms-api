@@ -21,6 +21,7 @@ const resolvers = {
   },
   Mutation: {
     addUser: async (_, { input }, { token, error }) => {
+      console.log(input.email);
       //error from token validation
       if (error) {
         throw new Error(error);
@@ -28,10 +29,10 @@ const resolvers = {
       try {
         let user = await User.findOne({ email: input.email }).exec();
         if (user) {
+          console.log(user);
           return user;
         } else {
           let response = await User.create(input);
-
           return response;
         }
       } catch (e) {
@@ -44,6 +45,7 @@ const resolvers = {
       }
       try {
         let response = await Form.create(input);
+        await Question.create({ formId: response.id });
         return response;
       } catch (e) {
         return e.message;
@@ -129,7 +131,8 @@ const resolvers = {
     },
     answerCount: async (parent, args, ctx, info) => {
       let q = await Question.findOne({ formId: parent.id });
-      return await Answer.count({ questionId: q.id });
+      let count = Answer.count({ questionId: q.id });
+      return count ? count : 0;
     },
   },
   User: {
