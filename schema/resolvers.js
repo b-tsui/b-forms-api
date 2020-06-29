@@ -21,7 +21,6 @@ const resolvers = {
   },
   Mutation: {
     addUser: async (_, { input }, { token, error }) => {
-      console.log(input.email);
       //error from token validation
       if (error) {
         throw new Error(error);
@@ -29,7 +28,6 @@ const resolvers = {
       try {
         let user = await User.findOne({ email: input.email }).exec();
         if (user) {
-          console.log(user);
           return user;
         } else {
           let response = await User.create(input);
