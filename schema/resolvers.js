@@ -50,8 +50,7 @@ const resolvers = {
           input.userId = user.id;
           let response = await Form.create(input);
           await Question.create({ formId: response.id });
-        }
-        if (input.userId) {
+        } else {
           let response = await Form.create(input);
           await Question.create({ formId: response.id });
           return response;
