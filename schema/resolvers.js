@@ -14,7 +14,6 @@ const resolvers = {
       await User.findById(args.id).exec(),
     userForms: async (parent, args, ctx, info) => {
       let user = await User.findOne({ email: args.userEmail }).exec();
-      console.log(user);
       return await Form.find({ userId: user.id }).exec();
     },
     form: async (parent, args, ctx, info) =>
@@ -47,9 +46,11 @@ const resolvers = {
       try {
         if (input.userEmail) {
           let user = await User.findOne({ email: input.userEmail });
+
           input.userId = user.id;
           let response = await Form.create(input);
           await Question.create({ formId: response.id });
+          return response;
         } else {
           let response = await Form.create(input);
           await Question.create({ formId: response.id });
