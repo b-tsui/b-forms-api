@@ -3,6 +3,7 @@ const User = require("../models/user");
 const Form = require("../models/form");
 const Question = require("../models/question");
 const Answer = require("../models/answer");
+const { response } = require("express");
 
 const resolvers = {
   Query: {
@@ -12,7 +13,9 @@ const resolvers = {
     user: async (parent, args, ctx, info) =>
       await User.findById(args.id).exec(),
     userForms: async (parent, args, ctx, info) => {
-      return await Form.find(args).exec();
+      let user = await User.findOne({ email: args.userEmail }).exec();
+      console.log(user);
+      return await Form.find({ userId: user.id }).exec();
     },
     form: async (parent, args, ctx, info) =>
       await Form.findById(args.id).exec(),
@@ -42,9 +45,17 @@ const resolvers = {
         throw new Error(error);
       }
       try {
-        let response = await Form.create(input);
-        await Question.create({ formId: response.id });
-        return response;
+        if (input.userEmail) {
+          let user = await User.findOne({ email: input.userEmail });
+          input.userId = user.id;
+          let response = await Form.create(input);
+          await Question.create({ formId: response.id });
+        }
+        if (input.userId) {
+          let response = await Form.create(input);
+          await Question.create({ formId: response.id });
+          return response;
+        }
       } catch (e) {
         return e.message;
       }

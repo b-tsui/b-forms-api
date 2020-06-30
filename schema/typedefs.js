@@ -59,7 +59,8 @@ const typeDefs = gql`
   }
 
   input AddFormInput {
-    userId: ID!
+    userId: ID
+    userEmail: String
     title: String
     description: String
   }
@@ -98,7 +99,7 @@ const typeDefs = gql`
   type Query {
     users: [User] #finds all users
     user(id: ID): User #find user by id
-    userForms(userId: ID): [Form] #find all forms for a user @id
+    userForms(userEmail: String): [Form] #find all forms for a user @id
     form(id: ID): Form #for form by id
     formQuestions(formId: ID): [Question]
   }
