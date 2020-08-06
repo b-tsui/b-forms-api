@@ -27,14 +27,12 @@ mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 //     userId: user1.id,
 //     title: "Vegetable Battle",
 //     description: "A grand battle between the two greatest vegetables",
-//     questions: [],
 //   });
 //   const form2 = await new Form({
 //     userId: user1.id,
 //     title: "Smoothie Ingredients",
 //     description:
 //       "Check all of your favorite ingredients and I'll make a smoothie out of the top 5 ingredients!",
-//     questions: [],
 //   });
 //   const question1 = await new Question({
 //     formId: form1.id,

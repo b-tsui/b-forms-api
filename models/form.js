@@ -13,7 +13,6 @@ const formSchema = new mongoose.Schema(
       required: true,
     },
     description: { type: String, default: "Form description goes here" },
-    questions: Array,
     createdAt: {
       type: Date,
       default: Date.now,
